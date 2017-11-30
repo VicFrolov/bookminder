@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import Header from 'containers/Header';
+import ChromeApiReq from 'services/ChromeApiReq'
 import './App.css';
 
 class App extends Component {
@@ -11,22 +12,25 @@ class App extends Component {
     this.state = { currentUrl: ""};
   }
 
-  getCurrentTabUrl() {
-    const queryInfo = {
-      active: true,
-      currentWindow: true
-    };
-
-    chrome.tabs.query(queryInfo, (tabs) => {
-      const tab = tabs[0];
-      const url = tab.url;
-      console.assert(typeof url == 'string', 'tab.url should be a string');
-      this.setState({ currentUrl: url });
+  getUrl() {
+    ChromeApiReq.getCurrentTabUrl().then((url) => {
+      this.setState({ currentUrl: url })
     });
   };
 
+  showBookmarks() {
+    ChromeApiReq.getSavedBookmarks().then((bookmarks) => {
+      console.log("I'm running!!!");
+      console.log(bookmarks)
+    })
+  }
+
   componentDidMount() {
-    this.getCurrentTabUrl();
+    this.getUrl();
+    this.showBookmarks();
+    ChromeApiReq.saveBookmark({"attackAt": "dawn"}).then((result) => {
+      console.log(result);
+    })
   }
 
   render() {
