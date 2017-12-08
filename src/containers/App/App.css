@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  width: 700px;
 }
 
 .App-title {
@@ -10,4 +11,8 @@
   font-size: large;
 }
 
+.section-header {
+  text-align: left;
+  padding-left: 30px;
+}
 

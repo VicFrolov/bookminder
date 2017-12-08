@@ -5,7 +5,7 @@ class ChromeApiReq {
   static getSavedBookmarks() {
     const bookmarkKey = "bookmarks";
     return new Promise((resolve, reject) => {
-      chrome.storage.sync.get(bookmarkKey, (items) => {
+      window.chrome.storage.sync.get(bookmarkKey, (items) => {
         resolve(chrome.runtime.lastError ? null : items[bookmarkKey]);
       });
     });
@@ -18,10 +18,10 @@ class ChromeApiReq {
     };
 
     return new Promise((resolve, reject) => {
-      chrome.tabs.query(queryInfo, (tabs) => {
+      window.chrome.tabs.query(queryInfo, (tabs) => {
         const tab = tabs[0];
         const url = tab.url;
-        console.assert(typeof url == 'string', 'tab.url should be a string');
+        console.assert(typeof url === 'string', 'tab.url should be a string');
         resolve(url);
       });
     });
@@ -33,10 +33,8 @@ class ChromeApiReq {
         if (!bookmarks) {
           bookmarks = [];
         }
-        console.log(bookmarks)
         bookmarks.push(bookmarkObj);
-        console.log(bookmarks)
-        chrome.storage.sync.set({"bookmarks": bookmarks});
+        window.chrome.storage.sync.set({"bookmarks": bookmarks});
         resolve(bookmarks);
       });
     });
